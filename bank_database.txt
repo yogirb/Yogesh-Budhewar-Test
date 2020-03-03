@@ -1,0 +1,240 @@
+
+mysql> create database bank;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use bank;
+Database changed
+
+
+mysql> create  table branch_master(branch_id varchar(6) primary key,branch_name varchar(30), branch_city varchar(30));
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> create  table customer_master(customer_number varchar(6) primary key,firstname varchar(30),middlename varchar(30),lastname varchar(30),customer_city varchar(15), customer_contact_number varchar(10), occupation varchar(20),customer_date_of_birth date );
+Query OK, 0 rows affected (0.02 sec)
+
+
+
+mysql>  create  table loan_detail(customer_number varchar(6) ,branch_id varchar(30), loan_amount int ,foreign key(branch_id) references branch_master(branch_id), foreign key (customer_number) references customer_master(customer_number));
+Query OK, 0 rows affected (0.03 sec)
+
+
+
+mysql> create  table account_master(account_number varchar(6) primary key,customer_number varchar(6),branch_id varchar(6),opening_balance int,account_opening_date date, customer_type varchar(10), account_status varchar(10),foreign key (customer_number) references customer_master(customer_number),foreign key(branch_id) references branch_master(branch_id));
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+mysql> create  table transaction_details(transaction_number varchar(6) primary key ,account_number varchar(6),date_of_transaction date,medium_of_transaction varchar(20),transaction_type varchar(20),transaction_amount int,foreign key (account_number) references account_master(account_number));
+Query OK, 0 rows affected (0.02 sec)
+
+
+
+
+mysql> show tables;
++---------------------+
+| Tables_in_bank      |
++---------------------+
+| account_master      |
+| branch_master       |
+| customer_master     |
+| loan_detail         |
+| transaction_details |
++---------------------+
+5 rows in set (0.01 sec)
+
+
+
+
+
+
+mysql> desc account_master;
++----------------------+-------------+------+-----+---------+-------+
+| Field                | Type        | Null | Key | Default | Extra |
++----------------------+-------------+------+-----+---------+-------+
+| account_number       | varchar(6)  | NO   | PRI | NULL    |       |
+| customer_number      | varchar(6)  | YES  | MUL | NULL    |       |
+| branch_id            | varchar(6)  | YES  | MUL | NULL    |       |
+| opening_balance      | int(11)     | YES  |     | NULL    |       |
+| account_opening_date | date        | YES  |     | NULL    |       |
+| customer_type        | varchar(10) | YES  |     | NULL    |       |
+| account_status       | varchar(10) | YES  |     | NULL    |       |
++----------------------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> desc branch_master;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| branch_id   | varchar(6)  | NO   | PRI | NULL    |       |
+| branch_name | varchar(30) | YES  |     | NULL    |       |
+| branch_city | varchar(30) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc customer_master;
++-------------------------+-------------+------+-----+---------+-------+
+| Field                   | Type        | Null | Key | Default | Extra |
++-------------------------+-------------+------+-----+---------+-------+
+| customer_number         | varchar(6)  | NO   | PRI | NULL    |       |
+| firstname               | varchar(30) | YES  |     | NULL    |       |
+| middlename              | varchar(30) | YES  |     | NULL    |       |
+| lastname                | varchar(30) | YES  |     | NULL    |       |
+| customer_city           | varchar(15) | YES  |     | NULL    |       |
+| customer_contact_number | varchar(10) | YES  |     | NULL    |       |
+| occupation              | varchar(20) | YES  |     | NULL    |       |
+| customer_date_of_birth  | date        | YES  |     | NULL    |       |
++-------------------------+-------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> desc loan_detail;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| customer_number | varchar(6)  | YES  | MUL | NULL    |       |
+| branch_id       | varchar(30) | YES  | MUL | NULL    |       |
+| loan_amount     | int(11)     | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc transaction_details;
++-----------------------+-------------+------+-----+---------+-------+
+| Field                 | Type        | Null | Key | Default | Extra |
++-----------------------+-------------+------+-----+---------+-------+
+| transaction_number    | varchar(6)  | NO   | PRI | NULL    |       |
+| account_number        | varchar(6)  | YES  | MUL | NULL    |       |
+| date_of_transaction   | date        | YES  |     | NULL    |       |
+| medium_of_transaction | varchar(20) | YES  |     | NULL    |       |
+| transaction_type      | varchar(20) | YES  |     | NULL    |       |
+| transaction_amount    | int(11)     | YES  |     | NULL    |       |
++-----------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql>
+
+
+
+mysql> select * from branch_master;
++-----------+-------------+-------------+
+| branch_id | branch_name | branch_city |
++-----------+-------------+-------------+
+| 1         | pune Branch | pune        |
+| 2         |  kothrudh   | pune        |
+| 3         | hinjewadi   | pune        |
++-----------+-------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customer_master;
++-----------------+-----------+------------+------------+---------------+-------------------------+------------+------------------------+
+| customer_number | firstname | middlename | lastname   | customer_city | customer_contact_number | occupation | customer_date_of_birth |
++-----------------+-----------+------------+------------+---------------+-------------------------+------------+------------------------+
+| 101             | md        | akhlak     | ahmad      | pune          | 7581823510              | SE         | 2020-02-03             |
+| 102             | shri      | yogesh     | Budhheswar | mp            | 75823510                | SE         | 2020-05-03             |
+| 103             | shri      | nikhil     | Budhheswar | haryana       | 758510                  | hE         | 2020-05-09             |
++-----------------+-----------+------------+------------+---------------+-------------------------+------------+------------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from loan_detail;
++-----------------+-----------+-------------+
+| customer_number | branch_id | loan_amount |
++-----------------+-----------+-------------+
+| 101             | 1         |      200000 |
+| 102             | 2         |      205000 |
+| 103             | 3         |      190000 |
++-----------------+-----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from transaction_details;
++--------------------+----------------+---------------------+-----------------------+------------------+--------------------+
+| transaction_number | account_number | date_of_transaction | medium_of_transaction | transaction_type | transaction_amount |
++--------------------+----------------+---------------------+-----------------------+------------------+--------------------+
+| 301                | 20002          | 2020-01-05          | online                | card             |               2000 |
+| 302                | 2001           | 2020-01-05          | online                | card             |              12000 |
+| 303                | 20003          | 2020-01-05          | online                | card             |              52000 |
++--------------------+----------------+---------------------+-----------------------+------------------+--------------------+
+3 rows in set (0.00 sec)
+
+
+
+
+mysql> select * from account_master;
++----------------+-----------------+-----------+-----------------+----------------------+---------------+----------------+
+| account_number | customer_number | branch_id | opening_balance | account_opening_date | customer_type | account_status |
++----------------+-----------------+-----------+-----------------+----------------------+---------------+----------------+
+| 20002          | 102             | 2         |           15000 | 2020-02-20           | salaried      | saving         |
+| 20003          | 103             | 3         |           12000 | 2020-02-20           | salaried      | saving         |
+| 2001           | 101             | 1         |            5000 | 2020-02-20           | salaried      | saving         |
++----------------+-----------------+-----------+-----------------+----------------------+---------------+----------------+
+3 rows in set (0.00 sec)
+
+******************************* Queries Performed *****************************************************
+
+mysql> select a.account_number,c.customer_number,c.firstname,c.lastname,a.account_opening_date from account_master a,customer_master c where c.customer_number=a.customer_number order by account_number;
++----------------+-----------------+-----------+------------+----------------------+
+| account_number | customer_number | firstname | lastname   | account_opening_date |
++----------------+-----------------+-----------+------------+----------------------+
+| 20002          | 102             | shri      | Budhheswar | 2020-02-20           |
+| 20003          | 103             | shri      | Budhheswar | 2020-02-20           |
+| 2001           | 101             | md        | ahmad      | 2020-02-20           |
++----------------+-----------------+-----------+------------+----------------------+
+3 rows in set (0.04 sec)
+
+mysql> select count(*) as cust_count from customer_master where customer_city='Pune';
++------------+
+| cust_count |
++------------+
+|          1 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select a.customer_number,c.firstname,a.account_number from account_master a,customer_master c where a.customer_number=c.customer_number and day(account_opening_date)>15;
++-----------------+-----------+----------------+
+| customer_number | firstname | account_number |
++-----------------+-----------+----------------+
+| 101             | md        | 2001           |
+| 102             | shri      | 20002          |
+| 103             | shri      | 20003          |
++-----------------+-----------+----------------+
+3 rows in set (0.01 sec)
+
+mysql>
+
+
+
+mysql> select count(*) as Count_Customer from customer_master where customer_number not in(select distinct customer_number from account_master);
++----------------+
+| Count_Customer |
++----------------+
+|              0 |
++----------------+
+1 row in set (0.04 sec)
+
+mysql> select c.firstname from customer_master c,account_master a where a.customer_number=c.customer_number  group by c.firstname having count(*)>1 ;
++-----------+
+| firstname |
++-----------+
+| shri      |
++-----------+
+1 row in set (0.01 sec)
+
+mysql> select c.customer_number,c.firstname,c.customer_city,b.branch_city from branch_master b inner join customer_master c inner join account_master a
+    -> on a.customer_number=c.customer_number and a.branch_id=b.branch_id where b.branch_city<>c.customer_city;
++-----------------+-----------+---------------+-------------+
+| customer_number | firstname | customer_city | branch_city |
++-----------------+-----------+---------------+-------------+
+| 102             | shri      | mp            | pune        |
+| 103             | shri      | haryana       | pune        |
++-----------------+-----------+---------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+ 
+
+
+
